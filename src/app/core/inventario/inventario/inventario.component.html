@@ -1,0 +1,76 @@
+<p-toast></p-toast>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+ <div>
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button pButton label="Crear" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+        </ng-template>
+        <ng-template pTemplate="right">
+            <button pButton label="Ventas" icon="pi pi-shopping-bag" class="p-button-info mr-2" (click)="openNew()"></button>
+        </ng-template>
+    </p-toolbar>
+    
+    <p-table [value]="medicamentos" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Laboratiorio</th>
+                <th>Fecha Creacion</th>
+                <th>Fecha Vencimiento</th>
+                <th>Stock</th>
+                <th>Valor</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-medicamento>
+            <tr>
+                <td>{{medicamento.id}}</td>
+                <td>{{medicamento.nombre}}</td>
+                <td>{{medicamento.laboratorio}}</td>
+                <td>{{medicamento.fecha_creacion | date: 'longDate'}}</td>
+                <td>{{medicamento.fecha_vencimiento | date: 'longDate'}}</td>
+                <td>{{medicamento.stock}}</td>
+                <td>{{medicamento.valor}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" style="margin-right: 5px;" (click)="editProduct(medicamento)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(medicamento)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+ </div>
+ 
+<p-dialog [(visible)]="formDialog" [style]="{width: '450px'}" header="Detalle Medicamento" [modal]="true" styleClass="p-fluid" (onHide)="seCerroELdialog()">
+    <ng-template pTemplate="content">
+        <form [formGroup]="formNuevoMedicamento">
+            <div class="field">
+                <label for="name">Nombre</label>
+                <input type="text" pInputText id="name" formControlName="nombre"/>
+            </div>
+            <div class="field">
+                <label for="name">Laboratorio</label>
+                <input type="text" pInputText id="name" formControlName="laboratorio"/>
+            </div>
+            <div class="field">
+                <label for="name">Fecha de Vencimiento</label>
+                <p-calendar formControlName="fecha_vencimiento"></p-calendar>
+            </div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="price">Stock</label>
+                    <p-inputNumber id="price" formControlName="stock"></p-inputNumber>
+                </div>
+                <div class="field col">
+                    <label for="quantity">Valor</label>
+                    <p-inputNumber id="quantity" formControlName="valor"></p-inputNumber>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="{{ typeFormMedicamento == 'create'? 'Guardar' : 'Editar'}}" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>
